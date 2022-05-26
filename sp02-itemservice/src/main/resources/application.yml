@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: item-service
+    #数据库配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://47.107.99.176:3306/microservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
+      #初始化时建立物理连接的个数。
+      initial-size: 10
+      #最大连接池数量
+      max-active: 50
+      #最小连接池数量
+      min-idle: 10
+      #获取连接时最大等待时间，单位毫秒
+      max-wait: 60000
+      #是否缓存preparedStatement，也就是PSCache,PSCache对支持游标的数据库性能提升巨大，比如说oracle,在mysql下建议关闭。
+      pool-prepared-statements: true
+      #      #要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      #      max-open-prepared-statements: -1
+      max-pool-prepared-statement-per-connection-size: 20
+      #配置检测可以关闭的空闲连接间隔时间
+      time-between-eviction-runs-millis: 60000
+      # 配置连接在池中的最小生存时间
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+      remove-abandoned-timeout-millis: 300000
+      remove-abandoned: true
+      log-abandoned: true
+  #redis配置
+  redis:
+    # 地址
+    # host: 10.125.138.239
+    # 端口
+    # port: 32505
+    sentinel:
+      master: gem
+      nodes: 10.125.138.241:32504,10.125.138.239:32506,10.125.138.240:12508
+    # 密码
+    password:
+    # 连接超时时间
+    timeout: 10s
+    lettuce:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池的最大数据库连接数
+        max-active: 8
+        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+# mybatis-plus配置
+mybatis-plus:
+  mapper-locations: classpath:mappers/*.xml  # 这里一定需要注意
+  type-handlers-package: com.gxu.sp02.typehandler
+server:
+  port: 8081
+

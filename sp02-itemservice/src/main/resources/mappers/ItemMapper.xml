@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxu.sp02.item.mapper.ItemMapper">
+
+    <select id="selectItemByOrderId" resultType="com.gxu.sp01.service.pojo.Item">
+        select *
+        from item
+        WHERE item_id in (select item_id
+                          from `order`
+                          where order_id = #{orderId})
+    </select>
+</mapper>

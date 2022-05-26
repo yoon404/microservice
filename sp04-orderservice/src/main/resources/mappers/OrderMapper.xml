@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxu.sp04.order.mapper.OrderMapper">
+    <insert id="insertBatch" parameterType="com.gxu.sp04.order.entity.OrderEntity">
+        insert into `order`
+        values (#{orderId}, #{itemId}, #{userId})
+    </insert>
+
+    <select id="selectByOrderId" parameterType="integer" resultType="com.gxu.sp04.order.entity.OrderEntity">
+        select *
+        from `order`
+        where order_id = #{orderId}
+    </select>
+
+    <select id="selectItemByOrderId" resultType="com.gxu.sp01.service.pojo.Item">
+        select *
+        from item
+        WHERE item_id in (select item_id
+                          from `order`
+                          where order_id = #{orderId})
+    </select>
+
+    <select id="selectUserByOrderId" resultType="com.gxu.sp01.service.pojo.User">
+        select *
+        from `user` where user_id in (select user_id
+                                      from `order`
+                                      where order_id = #{orderId});
+    </select>
+</mapper>
